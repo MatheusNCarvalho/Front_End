@@ -4,7 +4,7 @@
       <v-flex xs12 md12>
         <v-card>
           <v-card-title>
-            <v-btn icon @click="onLink(voltarPagina)">
+            <v-btn icon @click="onLink(voltar)">
               <v-icon>reply</v-icon>
             </v-btn>
             <h2 class="title mb-0" v-show="title">{{title}}</h2>
@@ -15,7 +15,8 @@
               <v-layout row wrap>
                 <slot></slot>
                 <v-flex xs12 md12>
-                  <v-btn color="success" @click="onSalvar">Salvar</v-btn>
+                  <slot name="botoes"></slot>
+                  <v-btn color="success" @click="onSalvar">{{nomeBotao}}</v-btn>
                   <v-btn color="secondary" @click="onLimpar">Limpar</v-btn>
                 </v-flex>
 
@@ -31,11 +32,11 @@
 <script>
   export default {
     name: 'FormBase',
-    props: ['title', 'voltarPagina'],
+    props: ['title', 'voltarPagina','nomeBotao'],
     data() {
       return {
         dialog: false,
-
+        voltar: this.voltarPagina
       }
     },
     methods: {
@@ -47,6 +48,11 @@
       },
       onLink(link) {
         this.$router.push({path: link})
+      }
+    },
+    watch: {
+      voltarPagina: function (obj) {
+        this.voltar = obj
       }
     }
 

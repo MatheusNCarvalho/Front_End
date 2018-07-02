@@ -1,5 +1,6 @@
 <template>
-  <from-base :title="this.$route.name" :linkNovoRegistro="'/tratamentos/novo'" @salvar="onSalvar" @limpar="onLimpar">
+  <from-base :title="this.$route.name" :linkNovoRegistro="'/tratamentos/novo'" @consultar="onConsultar"
+             @limpar="onLimpar">
     <template slot="container">
       <v-flex xs12 md5>
         <v-text-field :rules="[(v) => v.length <= 255 || '255 caracaters maximo']"
@@ -32,6 +33,7 @@
 <script>
   import FromBase from '@/components/formulario/FormConsulta.vue'
   import IndexPartial from './IndexPartial.vue'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'IndexTratamento',
@@ -45,19 +47,17 @@
         description: '',
         date: null,
         dateFormatted: null,
-        modal: false,
+        modal: false
       }
     },
     methods: {
-      onSalvar() {
-        alert(this.title)
+      onConsultar() {
+        this.Get()
       },
       onLimpar() {
         this.title = ''
       },
-      consultar(){
-        this.$TratamentoService.Get("/tratamento",{})
-      }
+      ...mapActions('Tratamento',['Get'])
     },
 
   }

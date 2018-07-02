@@ -1,4 +1,13 @@
-import Http from './base/UrlConfig'
+import Http from './DataBaseService'
+const urls = {
+  get: "v1/tratamentos?page=1&itemPerPage=10",
+  generica: "v1/tratamentos"
+}
+const result = {
+  result: [],
+  sucess: false
+}
+
 
 const configHeader = {
   responseType: 'json',
@@ -8,39 +17,38 @@ const configHeader = {
 export default {
   install: (Vue) => {
     Vue.prototype.$TratamentoService = {
-       Get(url, data) {
-        Http.get('v1/tratamentos?page=1&itemPerPage=10', data, configHeader)
+
+      Get(params) {
+        Http.get(urls.get, params, configHeader)
           .then(res => {
-            console.log("Deu certo", res)
+            result.result = res.data.result.data
           })
-          .catch(res => {
-            console.log("Deu ruim", res)
+        return result.result
+      },
+      GetById(id) {
+        Http.get(urls.get + '/' + id, configHeader)
+          .then(res => {
+            result.result = res.data.result.data
+          })
+        return result.result
+      },
+      Post(data) {
+        Http.post(urls.generica, data, configHeader)
+          .then(res => {
+            result.sucess =  true
+          })
+
+        return result.sucess
+      },
+      Put(data) {
+        Http.put(urls.generica, data, configHeader)
+          .then(res => {
+            return res
           })
       },
-       Post(url, data) {
-        Http.post(url, data, configHeader)
+      Delete(id) {
+        Http.delete(urls.generica + '/' + id, configHeader)
           .then(res => {
-            return res
-          })
-          .catch(res => {
-            return res
-          })
-      },
-       Put(url, data) {
-        Http.put(url, data, configHeader)
-          .then(res => {
-            return res
-          })
-          .catch(res => {
-            return res
-          })
-      },
-       Delete(url, data) {
-        Http.delete(url, data, configHeader)
-          .then(res => {
-            return res
-          })
-          .catch(res => {
             return res
           })
       }

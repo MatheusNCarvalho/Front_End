@@ -13,7 +13,7 @@ import {sync} from 'vuex-router-sync'
 import VueSweetalert2 from 'vue-sweetalert2';
 
 
-import Http from './servicos/dados/base/UrlConfig'
+import Http from './servicos/dados/DataBaseService'
 import ConfigRota from './router/ConfigRotas'
 import TratamentoService from './servicos/dados/TratamentoService'
 

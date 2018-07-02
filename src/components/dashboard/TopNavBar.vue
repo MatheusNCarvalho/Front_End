@@ -93,6 +93,8 @@
       return {
         drawer: null,
         items: [
+          {icon: 'find_replace', text: 'Home', link: '/'},
+          {divider: true},
           {icon: 'find_replace', text: 'Tratamento', link: '/tratamentos'},
           {divider: true},
           {icon: 'find_replace', text: 'Experimento', link: '/'}

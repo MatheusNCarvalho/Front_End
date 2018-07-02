@@ -1,64 +1,41 @@
 <template>
 
-      <div>
-        <!--<v-dialog v-model="dialog" max-width="500px">-->
-          <!--<v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>-->
-          <!--<v-card>-->
-            <!--<v-card-title>-->
-              <!--<span class="headline">{{ formTitle }}</span>-->
-            <!--</v-card-title>-->
-            <!--<v-card-text>-->
-              <!--<v-container grid-list-md>-->
-                <!--<v-layout wrap>-->
-                  <!--<v-flex xs12 sm6 md4>-->
-                    <!--<v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>-->
-                  <!--</v-flex>-->
-                  <!--<v-flex xs12 sm6 md4>-->
-                    <!--<v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>-->
-                  <!--</v-flex>-->
-                  <!--<v-flex xs12 sm6 md4>-->
-                    <!--<v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>-->
-                  <!--</v-flex>-->
-                  <!--<v-flex xs12 sm6 md4>-->
-                    <!--<v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>-->
-                  <!--</v-flex>-->
-                  <!--<v-flex xs12 sm6 md4>-->
-                    <!--<v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>-->
-                  <!--</v-flex>-->
-                <!--</v-layout>-->
-              <!--</v-container>-->
-            <!--</v-card-text>-->
-            <!--<v-card-actions>-->
-              <!--<v-spacer></v-spacer>-->
-              <!--<v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>-->
-              <!--<v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>-->
-            <!--</v-card-actions>-->
-          <!--</v-card>-->
-        <!--</v-dialog>-->
+  <div>
+    <v-data-table :headers="headers" :items="TratamentoList" hide-actions>
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.nome }}</td>
+        <td class="justify-center layout px-0">
 
-        <v-data-table  :headers="headers" :items="desserts"  hide-actions>
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.name }}</td>
-            <td class="justify-center layout px-0">
-              <v-btn icon class="mx-0" @click="editItem(props.item)">
-                <v-icon color="teal">edit</v-icon>
-              </v-btn>
-              <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                <v-icon color="pink">delete</v-icon>
-              </v-btn>
-            </td>
-          </template>
-          <template slot="no-data">
-            <span>Nenhum registro encontrado!</span>
-          </template>
-        </v-data-table>
-      </div>
+          <router-link style="text-decoration:none" :to="{ name: 'Detalhes Tratamento', params: { id: props.item.id }}">
+            <v-btn icon class="mx-0">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
+          </router-link>
+          <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+            <v-icon color="pink">delete</v-icon>
+          </v-btn>
+        </td>
+      </template>
+      <template slot="no-data">
+        <span>Nenhum registro encontrado!</span>
+      </template>
+    </v-data-table>
+  </div>
 
 </template>
 <script>
+  import {mapGetters, mapActions} from 'vuex'
+
   export default {
+    // props:{
+    //   tratamentoList:{
+    //     type: Array,
+    //     default: function () {
+    //       return [];
+    //     }
+    //   }
+    // },
     data: () => ({
-      dialog: false,
       headers: [
         {
           text: 'Nome',
@@ -67,69 +44,44 @@
         },
         {text: 'Actions', value: 'name', sortable: false}
       ],
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
-      },
-      defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
-      }
+
     }),
 
     computed: {
-      formTitle() {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      }
+      ...mapGetters({
+        TratamentoList: 'Tratamento/getTratamentoList'
+      })
     },
 
-    // watch: {
-    //   dialog(val) {
-    //     val || this.close()
-    //   }
-    // },
-
+    watch: {
+      // tratamentoList: function (obj) {
+      //   this.itens = obj
+      // }
+    },
 
     methods: {
-      initialize() {
-        this.desserts = [ ]
-      },
 
       editItem(item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        // this.editedIndex = this.tratamentoList.indexOf(item)
+        // this.editedItem = Object.assign({}, item)
+        // this.dialog = true
       },
 
       deleteItem(item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+        this.$swal({
+          title: "Confirma a exclusão do item ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Sim, delete!",
+          cancelButtonText: "Não, cancele!"
+        }).then(isConfirm => {
+          if (isConfirm.value) {
+            this.Delete(item)
+          }
+        })
       },
-
-      close() {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-
-      save() {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      }
+      ...mapActions('Tratamento', ['Delete'])
     }
   }
 </script>
