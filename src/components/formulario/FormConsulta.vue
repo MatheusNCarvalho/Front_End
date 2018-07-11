@@ -10,10 +10,12 @@
             <v-spacer/>
             <v-flex xs5 md3>
               <h2 class="title mb-0" @click="onLink(linkNovoRegistro)">
-                Novo Registro
-                <v-btn icon @click="onLink(voltarPagina)">
-                  <v-icon>arrow_forward</v-icon>
-                </v-btn>
+                <v-tooltip left >
+                  <v-btn slot="activator"  icon @click="onLink(voltarPagina)">
+                    <v-icon>arrow_forward</v-icon>
+                  </v-btn>
+                  <span>Novo Registro</span>
+                </v-tooltip>
               </h2>
             </v-flex>
           </v-card-title>
@@ -23,7 +25,7 @@
               <v-layout row wrap>
                 <slot name="container"></slot>
                 <v-flex xs12 md12>
-                  <v-btn color="success" @click="onConsultar">Consultar</v-btn>
+                  <v-btn color="primary" @click="onConsultar">Consultar</v-btn>
                   <v-btn color="secondary" @click="onLimpar">Limpar</v-btn>
                 </v-flex>
               </v-layout>
@@ -54,7 +56,9 @@
     name: 'FormBase',
     props: ['title', 'linkNovoRegistro'],
     data() {
-      return {}
+      return {
+        show:false
+      }
     },
     methods: {
       onLimpar() {

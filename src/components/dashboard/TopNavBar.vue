@@ -14,12 +14,12 @@
           <v-layout row v-if="item.heading" align-center :key="item.heading">
             <v-flex xs6>
               <v-subheader v-if="item.heading">
-                {{ item.heading }}
+                <strong>{{ item.heading }}</strong>
               </v-subheader>
             </v-flex>
-            <v-flex xs6 class="text-xs-center">
-              <a href="#!" class="body-2 black--text">EDIT</a>
-            </v-flex>
+            <!--<v-flex xs6 class="text-xs-center">-->
+              <!--<a href="#!" class="body-2 black&#45;&#45;text">EDIT</a>-->
+            <!--</v-flex>-->
           </v-layout>
 
           <v-list-group v-else-if="item.children" v-model="item.model" :key="item.text"
@@ -46,7 +46,7 @@
             </v-list-tile>
           </v-list-group>
 
-          <v-divider v-else-if="item.divider" :key="item.divider"></v-divider>
+          <v-divider v-else-if="item.divider" :key="item.key"></v-divider>
 
           <v-list-tile v-else @click="" :key="item.text">
             <v-list-tile-action>
@@ -62,7 +62,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar class="blue" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
+    <v-toolbar style="background-color:#009688!important;" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <span class="hidden-sm-and-down">IF Experimentos</span>
@@ -70,11 +70,11 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon large>
-        <v-avatar>
-          <img  src="https://vuetifyjs.com/doc-images/john.jpg" alt="John">
-        </v-avatar>
-      </v-btn>
+      <!--<v-btn icon large>-->
+        <!--<v-avatar>-->
+          <!--<img  src="https://vuetifyjs.com/doc-images/john.jpg" alt="John">-->
+        <!--</v-avatar>-->
+      <!--</v-btn>-->
       <v-btn icon>
         <v-icon>apps</v-icon>
       </v-btn>
@@ -93,11 +93,12 @@
       return {
         drawer: null,
         items: [
-          {icon: 'find_replace', text: 'Home', link: '/'},
-          {divider: true},
+          {divider: true, key:'1'},
+          {heading:'Administracao'},
+          {icon: 'find_replace', text: 'Homeaa', link: '/',},
           {icon: 'find_replace', text: 'Tratamento', link: '/tratamentos'},
-          {divider: true},
-          {icon: 'find_replace', text: 'Experimento', link: '/'}
+
+          {icon: 'find_replace', text: 'Experimento', link: '/experimentos'}
           //{ icon: 'content_copy', text: 'Duplicates' },
           /* {
                icon: 'keyboard_arrow_up',

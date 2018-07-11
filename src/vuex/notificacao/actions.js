@@ -1,10 +1,8 @@
 import Vue from 'vue'
-import router from '../../router/routes'
+
 
 const setRedirect = ({state,dispatch, commit}, obj)=>{
-
   window.location.href= '/tratamentos'
-  //this.$router.push({path: '/tratamentos'})
 }
 
 const setSucess = ({commit}, obj) => {
